@@ -1,3 +1,13 @@
+const loader = document.querySelector("#loader");
+loader.innerHTML = `
+<div class="d-flex justify-content-center">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+`;
+
+loader.style.display = "none";
 try {
   const loadNewsCategories = async () => {
     const url = `https://openapi.programming-hero.com/api/news/categories`;
@@ -25,6 +35,10 @@ const displayCategories = (categories) => {
 };
 
 function getNews(cat_id) {
+  loader.style.display = "block";
+  document.getElementById("newsList").style.opacity = "0";
+  document.getElementById("newsList").style.transition = "0.3s";
+
   try {
     const loadNewsByCategories = async () => {
       const caturl = `https://openapi.programming-hero.com/api/news/category/${cat_id}`;
@@ -33,8 +47,13 @@ function getNews(cat_id) {
 
       displayNewsByCat(newdata.data);
     };
-
-    const displayNewsByCategories = loadNewsByCategories();
+    setTimeout(function () {
+      loader.style.display = "none";
+      const displayNewsByCategories = loadNewsByCategories();
+      setTimeout(function () {
+        document.getElementById("newsList").style.opacity = "1";
+      }, 500);
+    }, 2000);
   } catch (err) {
     console.log(err);
   }
