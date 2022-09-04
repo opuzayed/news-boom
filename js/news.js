@@ -101,10 +101,10 @@ const displayNewsByCat = (catnews) => {
       newsListDiv.classList.add("shadow");
       newsListDiv.classList.add("p-3");
       newsListDiv.innerHTML = `
-      <div class="col-4">
+      <div class="col-md-4 col-12 my-4 text-center">
       <img src="${thumbnail_url}" class="img-thumbnail rounded"" alt="image">
   </div>
-  <div class="col-8">
+  <div class="col-md-8 my-4 col-12">
       <div>
           <h4 class="fw-bold">${newstitle}</h4>
       </div>
