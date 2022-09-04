@@ -74,7 +74,7 @@ const displayNewsByCat = (catnews) => {
       </div>
       <div>
           <p>
-             ${newsdetails} 
+             ${newsdetails.slice(0, 500) + "..."} 
           </p>
       </div>
      <div>
