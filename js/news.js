@@ -1,9 +1,14 @@
-const loadNewsCategories = async () => {
-  const url = `https://openapi.programming-hero.com/api/news/categories`;
-  const res = await fetch(url);
-  const data = await res.json();
-  displayCategories(data.data.news_category);
-};
+try {
+  const loadNewsCategories = async () => {
+    const url = `https://openapi.programming-hero.com/api/news/categories`;
+    const res = await fetch(url);
+    const data = await res.json();
+    displayCategories(data.data.news_category);
+  };
+  const displayNewsCategories = loadNewsCategories();
+} catch (error) {
+  console.error(error);
+}
 
 //-----display-category--------
 const displayCategories = (categories) => {
@@ -19,52 +24,59 @@ const displayCategories = (categories) => {
   });
 };
 
-const displayNewsCategories = loadNewsCategories();
-
 function getNews(cat_id) {
-  const loadNewsByCategories = async () => {
-    const caturl = `https://openapi.programming-hero.com/api/news/category/${cat_id}`;
-    const catres = await fetch(caturl);
-    const newdata = await catres.json();
+  try {
+    const loadNewsByCategories = async () => {
+      const caturl = `https://openapi.programming-hero.com/api/news/category/${cat_id}`;
+      const catres = await fetch(caturl);
+      const newdata = await catres.json();
 
-    displayNewsByCat(newdata.data);
+      displayNewsByCat(newdata.data);
+    };
+
+    const displayNewsByCategories = loadNewsByCategories();
+  } catch (err) {
+    console.log(err);
+  }
+}
+try {
+  const loadDefaultNewsByCategories = async () => {
+    const decaturl = `https://openapi.programming-hero.com/api/news/category/01`;
+    const decatres = await fetch(decaturl);
+    const dedata = await decatres.json();
+
+    displayNewsByCat(dedata.data);
   };
 
-  const displayNewsByCategories = loadNewsByCategories();
+  const displayDefaultNewsByCategories = loadDefaultNewsByCategories();
+} catch (err) {
+  console.log(err);
 }
-
-const loadDefaultNewsByCategories = async () => {
-  const decaturl = `https://openapi.programming-hero.com/api/news/category/01`;
-  const decatres = await fetch(decaturl);
-  const dedata = await decatres.json();
-
-  displayNewsByCat(dedata.data);
-};
-
-const displayDefaultNewsByCategories = loadDefaultNewsByCategories();
-
 const displayNewsByCat = (catnews) => {
   const newslistContainer = document.getElementById("newsList");
   newslistContainer.innerHTML = ``;
-  catnews.forEach((news) => {
-    let newstitle = news.title;
-    let newsid = news._id;
-    let newsurl = `https://openapi.programming-hero.com/api/news/${news._id}`;
-    let newsviews = news.total_view;
-    let newsrating = news.rating.number;
-    let thumbnail_url = news.thumbnail_url;
-    let newsdetails = news.details;
-    let newsauther = news.author.name;
-    let newsautherImg = news.author.img;
-    let newsautherDate = news.author.published_date;
+  if (catnews.length <= 0) {
+    newslistContainer.innerHTML = `<h2 class="text-center text-xl">No News Found</h2>`;
+  } else {
+    catnews.forEach((news) => {
+      let newstitle = news.title;
+      let newsid = news._id;
+      let newsurl = `https://openapi.programming-hero.com/api/news/${news._id}`;
+      let newsviews = news.total_view;
+      let newsrating = news.rating.number;
+      let thumbnail_url = news.thumbnail_url;
+      let newsdetails = news.details;
+      let newsauther = news.author.name;
+      let newsautherImg = news.author.img;
+      let newsautherDate = news.author.published_date;
 
-    const newsListDiv = document.createElement("div");
-    newsListDiv.classList.add("row");
-    newsListDiv.classList.add("mb-5");
-    newsListDiv.classList.add("align-items-center");
-    newsListDiv.classList.add("shadow");
-    newsListDiv.classList.add("p-3");
-    newsListDiv.innerHTML = `
+      const newsListDiv = document.createElement("div");
+      newsListDiv.classList.add("row");
+      newsListDiv.classList.add("mb-5");
+      newsListDiv.classList.add("align-items-center");
+      newsListDiv.classList.add("shadow");
+      newsListDiv.classList.add("p-3");
+      newsListDiv.innerHTML = `
       <div class="col-4">
       <img src="${thumbnail_url}" class="img-thumbnail rounded"" alt="image">
   </div>
@@ -92,6 +104,7 @@ const displayNewsByCat = (catnews) => {
      </div>
   </div>
   `;
-    newslistContainer.appendChild(newsListDiv);
-  });
+      newslistContainer.appendChild(newsListDiv);
+    });
+  }
 };
