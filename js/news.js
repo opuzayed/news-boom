@@ -38,6 +38,7 @@ function getNews(cat_id) {
   loader.style.display = "block";
   document.getElementById("newsList").style.opacity = "0";
   document.getElementById("newsList").style.transition = "0.3s";
+  let catName = this.innerHTML;
 
   try {
     const loadNewsByCategories = async () => {
@@ -49,9 +50,11 @@ function getNews(cat_id) {
     };
     setTimeout(function () {
       loader.style.display = "none";
+      document.getElementById("news-count").style.display = "none";
       const displayNewsByCategories = loadNewsByCategories();
       setTimeout(function () {
         document.getElementById("newsList").style.opacity = "1";
+        document.getElementById("news-count").style.display = "block";
       }, 500);
     }, 2000);
   } catch (err) {
@@ -72,6 +75,8 @@ try {
   console.log(err);
 }
 const displayNewsByCat = (catnews) => {
+  const newscountDiv = document.getElementById("news-count");
+  newscountDiv.innerHTML = `<h5>${catnews.length} items found for the current category</h5>`;
   const newslistContainer = document.getElementById("newsList");
   newslistContainer.innerHTML = ``;
   if (catnews.length <= 0) {
